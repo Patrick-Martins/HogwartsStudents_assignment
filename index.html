@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
+    <title>Students enrolled at Hogwarts in 1991</title>
+  </head>
+  <body>
+    <h1>Students enrolled at Hogwarts in 1991</h1>
+    <table class="listOfStudents_table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>House</th>
+        </tr>
+      </thead>
+
+      <tbody></tbody>
+    </table>
+
+    <template class="studentTemplate">
+      <tr>
+        <td class="studentName">STUDENT NAME</td>
+        <td class="studentHouse">STUDENT HOUSE</td>
+      </tr>
+    </template>
+
+    <div class="modalBG">
+      <!-- add a data-set here only should be enough (below)-->
+      <div id="modal" class="modal_container">
+        <div class="modal_header">
+          <img alt="Harry Potter House" src="" class="house_image" />
+
+          <h2 class="name">NAME</h2>
+        </div>
+
+        <div class="studentImage"></div>
+
+        <p class="studentInfo"></p>
+      </div>
+    </div>
+  </body>
+</html>

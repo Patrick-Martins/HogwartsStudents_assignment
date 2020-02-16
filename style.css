@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu&display=swap");
+
+:root {
+  --gryffindor_bg: #740001;
+  --gryffindor_text: #eeba30;
+  --hufflepuff_bg: #ecb939;
+  --hufflepuff_text: #372e29;
+  --ravenclaw_bg: #0e1a40;
+  --ravenclaw_text: #946b2d;
+  --slytherin_bg: #1a472a;
+  --slytherin_text: #aaaaaa;
+
+  /* one primary and another secondary and change each in the dataset */
+}
+
+html {
+  font-family: "Ubuntu", sans-serif;
+}
+
+/* TABLE  --------------------------------------------------------------*/
+.listOfStudents_table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  min-width: 500px;
+  margin: 0 auto;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.listOfStudents_table thead tr {
+  background-color: black;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.listOfStudents_table th,
+.listOfStudents_table td {
+  padding: 12px 15px;
+}
+
+.listOfStudents_table tbody tr {
+  border-bottom: 1px solid gray;
+}
+
+.listOfStudents_table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.listOfStudents_table tbody tr:last-of-type {
+  border-bottom: 2px solid black;
+}
+
+.studentHouse {
+  font-style: italic;
+}
+
+/* MODAL  --------------------------------------------------------------*/
+.modalBG {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4); /* Has opacity */
+}
+
+.modal_container {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  width: 90%;
+}
+
+.modal_header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  text-align: center;
+}
+
+.modal_header .name {
+  display: inline-block;
+  margin: auto 10px auto auto;
+}
+
+.modal_header .house_image {
+  width: 50px;
+}
+
+.studentImage {
+  width: 30%;
+  height: 100px;
+  background-color: black;
+  margin: 0 auto;
+}
+
+.modal_container[data-design="gryffindor"] {
+  background-color: var(--gryffindor_bg);
+  color: var(--gryffindor_text);
+}
+
+.modal_container[data-design="hufflepuff"] {
+  background-color: var(--hufflepuff_bg);
+  color: var(--hufflepuff_text);
+}
+
+.modal_container[data-design="ravenclaw"] {
+  background-color: var(--ravenclaw_bg);
+  color: var(--ravenclaw_text);
+}
+
+.modal_container[data-design="slytherin"] {
+  background-color: var(--slytherin_bg);
+  color: var(--slytherin_text);
+}
