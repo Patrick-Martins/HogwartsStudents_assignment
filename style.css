@@ -94,9 +94,8 @@ html {
 }
 
 .studentImage {
-  width: 30%;
+  display: block;
   height: 100px;
-  background-color: black;
   margin: 0 auto;
 }
 
