@@ -161,3 +161,25 @@ html {
 .close {
   display: none;
 }
+
+.selectedButton {
+  background-color: black;
+  color: white;
+}
+
+.expellStudent {
+  animation: fadeout forwards 1s cubic-bezier(0.42, 1.47, 0.72, 1.04);
+  /* animation-delay: calc(var(--animationDelay) * 1s); */
+  opacity: 1;
+}
+
+@keyframes fadeout {
+  from {
+    background-color: white;
+  }
+
+  to {
+    opacity: 0;
+    background-color: red;
+  }
+}

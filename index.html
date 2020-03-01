@@ -9,6 +9,7 @@
     <title>Students enrolled at Hogwarts in 1991</title>
   </head>
   <body>
+    <button id="hackSystem">Click here!</button>
     <h1>Students enrolled at Hogwarts in 1991</h1>
 
     <p>
@@ -17,13 +18,13 @@
       <button class="filter" data-action="filter" data-filter="hufflepuff">Hufflepuff</button>
       <button class="filter" data-action="filter" data-filter="ravenclaw">Ravenclaw</button>
       <button class="filter" data-action="filter" data-filter="slytherin">Slytherin</button>
-      <button class="filter" data-action="filter" data-filter="all">All Enrolled Students</button>
+      <button class="filter selectedButton" data-action="filter" data-filter="all">All Enrolled Students</button>
       <button class="filter" data-action="filter" data-filter="expelled">Expelled students</button>
     </p>
 
     <p>
       Sort:
-      <button data-action="sort" data-sort-direction="asc" data-sort="name">None</button>
+      <button class="selectedButton" data-action="sort" data-sort-direction="asc" data-sort="name">None</button>
       <button data-action="sort" data-sort-direction="asc" data-sort="firstName">First Name ASC</button>
       <button data-action="sort" data-sort-direction="asc" data-sort="lastName">Last Name ASC</button>
       <button data-action="sort" data-sort-direction="desc" data-sort="firstName">First Name DESC</button>
@@ -79,18 +80,48 @@
 
         <img class="studentImage" src="" alt="Student Image" />
 
+        <div class="infoStudent">
+          <div class="names">
+            <p class="firstName"></p>
+            <p class="lastName"></p>
+            <p class="middleName"></p>
+            <p class="nickName"></p>
+            <p class="bloodStatus"></p>
+          </div>
+
+          <div class="occupationsStudent">
+            <p class="isPrefect"></p>
+            <p class="isExpelled"></p>
+            <p class="isInquisitorial"></p>
+          </div>
+        </div>
+
         <button class="addInquisitorial" data-action="add">Add to Inquisitorial Squad</button>
 
         <p class="studentInfo"></p>
       </div>
     </div>
 
-    <div id="onlyonekind" class="dialog close">
+    <div id="onlyonegender" class="dialog close">
       <div class="dialogcontent">
         <button class="closebutton">close</button>
         <h1>You can only have one winner of each type</h1>
         <h2>Remove the other if you want to appoint a new one</h2>
         <p><button data-action="remove">Remove</button> <span class="student">NAME, the TYPE</span></p>
+      </div>
+    </div>
+
+    <div id="cannotExpell" class="dialog close">
+      <div class="dialogcontent">
+        <button class="closebutton">close</button>
+        <h1>Cannot expell Me!</h1>
+      </div>
+    </div>
+
+    <div id="cannotInquisitorial" class="dialog close">
+      <div class="dialogcontent">
+        <button class="closebutton">close</button>
+        <h1>Could not add to Inquisitorial Squad</h1>
       </div>
     </div>
   </body>

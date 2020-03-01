@@ -48,6 +48,7 @@ function setupPage() {
   document.querySelectorAll(".filter").forEach(button => button.addEventListener("click", setFilter));
   document.querySelectorAll("[data-action=sort]").forEach(button => button.addEventListener("click", setSort));
   document.querySelector(".search-field").addEventListener("keyup", setSearch);
+  document.getElementById("hackSystem").addEventListener("click", hackTheSystem);
 }
 
 function getStudents() {
@@ -150,7 +151,7 @@ function buildListOfStudents() {
   currentStudentsList = studentsArray;
 
   if (settings.filter === "expelled") {
-    currentStudentsList = filterList(expelledStudents);
+    currentStudentsList = expelledStudents;
   } else {
     currentStudentsList = filterList(currentStudentsList);
   }
@@ -187,10 +188,17 @@ function showStudents(student) {
 
   //only be able to expell if student is not expelled
   if (student.cannotBeExpelled === true) {
+    if (student.firstName === "Patrick") {
+      templateCopy.querySelector("[data-field=expell]").addEventListener("click", function() {
+        showContainer(document.getElementById("cannotExpell"));
+      });
+    }
     templateCopy.querySelector("[data-field=expell]").classList.add("inactive");
   } else if (student.expelled === "not expelled") {
-    templateCopy.querySelector("[data-field=expell]").addEventListener("click", () => {
+    templateCopy.querySelector("[data-field=expell]").addEventListener("click", function() {
       expellStudent(student);
+      this.parentElement.classList.add("expellStudent");
+      setTimeout(buildListOfStudents, 1000);
     });
   }
 
@@ -200,7 +208,6 @@ function showStudents(student) {
   //if it is a prefect display colors of that house
   //show it is a prefect
 
-  setPrefectElement.setAttribute("data-prefect", student.prefect);
   // if (student.prefect === true) {
   //   templateCopy.querySelector("tr").setAttribute("data-design", student.house);
   // }
@@ -214,8 +221,6 @@ function showStudents(student) {
 function studentOnClick(student) {
   //Show modal
   const modal = document.querySelector(".modalBG");
-  // modal.style.display = "block";
-  // modal.classList.remove("close");
   showContainer(modal);
 
   //add background and text color for the modal depending on house
@@ -224,30 +229,15 @@ function studentOnClick(student) {
   contentModal.setAttribute("data-design", student.house.toLowerCase());
 
   //Show content
-  modal.querySelector(".modal_header .name").textContent = showFirstAndLastName(student.firstName, student.lastName);
-  //Show the image with the name of the house in the path
-  modal.querySelector(".modal_header .house_image").src = `houses_imgs/${student.house.toLowerCase()}.png`;
-  //////////////////////////////
+  displayStudentInfo(student, modal);
 
-  modal.querySelector(".studentImage").src = student.imageFileName;
-
-  //show correct text on button depending if he is or not part of Inquisitorial Squad
-  buttonInquisitorialText(student);
-
-  //check if student is already in Inquisitorial Squad or not
-  modal.querySelector(".addInquisitorial").addEventListener("click", function() {
-    addStudentToInquisitorialSquad(student);
+  //remove eventListener when modal is closed
+  //NOT WORKING
+  modal.querySelector(".closebutton").addEventListener("click", function() {
+    modal.querySelector(".addInquisitorial").removeEventListener("click", function() {
+      addStudentToInquisitorialSquad(student);
+    });
   });
-
-  // if (student.inquisitorialSquad === false) {
-  //   modal.querySelector(".addInquisitorial").classList.remove("close");
-  //   modal.querySelector(".addInquisitorial").addEventListener("click", function() {
-  //     addStudentToInquisitorialSquad(student);
-  //     modal.querySelector(".addInquisitorial").classList.add("close");
-  //   });
-  // } else {
-  //   modal.querySelector(".addInquisitorial").classList.add("close");
-  // }
 }
 
 function changeName(name, index) {
@@ -309,6 +299,12 @@ function checkBloodType(student) {
 //load Families->Prepare them->countFiles->[if all files are loaded]->doBloodStatuses->displayList
 
 function setFilter() {
+  //set button as active an all others as inactive
+  document.querySelectorAll("button.filter").forEach(button => {
+    button.classList.remove("selectedButton");
+  });
+  this.classList.add("selectedButton");
+
   const filterType = this.dataset.filter;
   settings.filter = filterType;
   buildListOfStudents();
@@ -319,6 +315,12 @@ function filterList(list) {
 }
 
 function setSort() {
+  //set button as active an all others as inactive
+  document.querySelectorAll("[data-action=sort]").forEach(button => {
+    button.classList.remove("selectedButton");
+  });
+  this.classList.add("selectedButton");
+
   settings.sortOrder = this.dataset.sortDirection;
   settings.sortType = this.dataset.sort;
   console.log("Pressed sort" + settings.sortOrder);
@@ -377,7 +379,6 @@ function expellStudent(student) {
   indexOfStudent = studentsArray.indexOf(student);
   expelledStudents.push(student);
   studentsArray.splice(indexOfStudent, 1);
-  buildListOfStudents();
 }
 //i have to join firstName, middleName and last name to a temporary array and check if the text searched equals any of those elements of the array
 
@@ -409,13 +410,13 @@ function makeStudentPrefect(student) {
       const sameGenderPrefect = prefectsFromHouse.filter(prefect => prefect.gender === student.gender)[0];
 
       //showModal
-      showContainer(document.getElementById("onlyonekind"));
+      showContainer(document.getElementById("onlyonegender"));
       //change modal text
       changePrefectBoxText(sameGenderPrefect);
       //add event listener to button to remove and after close the modal
-      document.querySelector("#onlyonekind .dialogcontent p button").addEventListener("click", function() {
+      document.querySelector("#onlyonegender .dialogcontent p button").addEventListener("click", function() {
         removePrefect(sameGenderPrefect, student);
-        closeContainer(document.getElementById("onlyonekind"));
+        closeContainer(document.getElementById("onlyonegender"));
         buildListOfStudents();
       });
     } else {
@@ -425,7 +426,7 @@ function makeStudentPrefect(student) {
   buildListOfStudents();
 }
 function changePrefectBoxText(currentPrefect) {
-  document.querySelector("#onlyonekind .dialogcontent p .student").textContent =
+  document.querySelector("#onlyonegender .dialogcontent p .student").textContent =
     showFirstAndLastName(currentPrefect.firstName, currentPrefect.lastName) + " as a prefect of " + currentPrefect.house.charAt(0).toUpperCase() + currentPrefect.house.substring(1);
 }
 function removePrefect(currentPrefect, newPrefect) {
@@ -471,21 +472,91 @@ function buttonInquisitorialText(student) {
 }
 
 function addStudentToInquisitorialSquad(student) {
-  if (student.inquisitorialSquad == false) {
+  if (systemHacked === true) {
     student.inquisitorialSquad = true;
     inquisitorialList.push(student);
-    modal.querySelector(".addInquisitorial").textContent = "Remove from Inquisitorial Squad";
-    studentOnClick(student);
+    buildListOfStudents();
+    setTimeout(function() {
+      removeInquisitorialStudent(student);
+    }, 2000);
   } else {
-    student.inquisitorialSquad = false;
-    //remove from inquisitorial
-    inquisitorialList.splice(inquisitorialList.indexOf(student), 1);
-    modal.querySelector(".addInquisitorial").textContent = "Add to Inquisitorial Squad";
-    studentOnClick(student);
+    if (student.inquisitorialSquad === false) {
+      inquisitorialList.push(student);
+      student.inquisitorialSquad = true;
+      modal.querySelector(".addInquisitorial").textContent = "Remove from Inquisitorial Squad";
+      studentOnClick(student);
+    } else {
+      student.inquisitorialSquad = false;
+      //remove from inquisitorial
+      inquisitorialList.splice(inquisitorialList.indexOf(student), 1);
+      modal.querySelector(".addInquisitorial").textContent = "Add to Inquisitorial Squad";
+      studentOnClick(student);
+    }
   }
   // //update information on modal
   // studentOnClick(student);
   console.log(inquisitorialList);
+}
+
+function displayStudentInfo(student, modal) {
+  modal.querySelector(".modal_header .name").textContent = showFirstAndLastName(student.firstName, student.lastName);
+  //Show the image with the name of the house in the path
+  modal.querySelector(".modal_header .house_image").src = `houses_imgs/${student.house.toLowerCase()}.png`;
+  modal.querySelector(".studentImage").src = student.imageFileName;
+
+  //Show student info
+  modal.querySelector(".infoStudent .names .firstName").textContent = `First Name: ${student.firstName}`;
+  if (student.lastName != null) {
+    modal.querySelector(".infoStudent .names .lastName").classList.remove("close");
+    modal.querySelector(".infoStudent .names .lastName").textContent = `Last Name: ${student.lastName}`;
+  } else {
+    //dont show
+    modal.querySelector(".infoStudent .names .lastName").classList.add("close");
+  }
+
+  if (student.middleName != null) {
+    modal.querySelector(".infoStudent .names .middleName").classList.remove("close");
+    modal.querySelector(".infoStudent .names .middleName").textContent = `Middle Name: ${student.middleName}`;
+  } else {
+    //dont show
+    modal.querySelector(".infoStudent .names .middleName").classList.add("close");
+  }
+
+  if (student.nickName != null) {
+    modal.querySelector(".infoStudent .names .nickName").classList.remove("close");
+    modal.querySelector(".infoStudent .names .nickName").textContent = `Nickname: ${student.middleName}`;
+  } else {
+    //dont show
+    modal.querySelector(".infoStudent .names .nickName").classList.add("close");
+  }
+
+  modal.querySelector(".infoStudent .names .bloodStatus").textContent = `Blood Status: ${student.bloodStatus}`;
+
+  //student occupations
+  if (student.prefect === true) {
+    modal.querySelector(".infoStudent .occupationsStudent .isPrefect").textContent = `Prefect: YES`;
+  } else {
+    modal.querySelector(".infoStudent .occupationsStudent .isPrefect").textContent = `Prefect: NO`;
+  }
+
+  if (student.expelled === "expelled") {
+    modal.querySelector(".infoStudent .occupationsStudent .isExpelled").textContent = `Expelled: YES`;
+  } else {
+    modal.querySelector(".infoStudent .occupationsStudent .isExpelled").textContent = `Expelled: NO`;
+  }
+
+  if (student.inquisitorialSquad === true) {
+    modal.querySelector(".infoStudent .occupationsStudent .isInquisitorial").textContent = `Member of Inquisitorial Squad: YES`;
+  } else {
+    modal.querySelector(".infoStudent .occupationsStudent .isInquisitorial").textContent = `Member of Inquisitorial Squad: NO`;
+  }
+
+  //show correct text on button depending if he is or not part of Inquisitorial Squad
+  buttonInquisitorialText(student);
+  //remove eventListener when i close the modal
+  modal.querySelector(".addInquisitorial").addEventListener("click", function() {
+    addStudentToInquisitorialSquad(student);
+  });
 }
 
 let systemHacked = false;
@@ -508,9 +579,30 @@ function hackTheSystem() {
 
   me.cannotBeExpelled = true;
 
-  buildListOfStudents();
-
   systemHacked = true;
 
+  buildListOfStudents();
+
+  changeBloodTypes();
+
   console.log("Hacked the system");
+}
+
+function changeBloodTypes() {
+  const bloodStatusArray = ["pure", "half", "muggle"];
+  studentsArray.forEach(student => {
+    if (student.bloodStatus === "pure") {
+      student.bloodStatus = bloodStatusArray[Math.floor(Math.random() * 3)];
+    } else {
+      student.bloodStatus = "pure";
+    }
+  });
+  buildListOfStudents();
+  setTimeout(changeBloodTypes, 3000);
+}
+
+function removeInquisitorialStudent(student) {
+  student.inquisitorialSquad = false;
+  inquisitorialList.splice(inquisitorialList.indexOf(student), 1);
+  showContainer(document.getElementById("cannotInquisitorial"));
 }
