@@ -17,7 +17,8 @@
       <button class="filter" data-action="filter" data-filter="hufflepuff">Hufflepuff</button>
       <button class="filter" data-action="filter" data-filter="ravenclaw">Ravenclaw</button>
       <button class="filter" data-action="filter" data-filter="slytherin">Slytherin</button>
-      <button class="filter" data-action="filter" data-filter="all">All Students</button>
+      <button class="filter" data-action="filter" data-filter="all">All Enrolled Students</button>
+      <button class="filter" data-action="filter" data-filter="expelled">Expelled students</button>
     </p>
 
     <p>
@@ -34,26 +35,42 @@
     <table class="listOfStudents_table">
       <thead>
         <tr>
-          <th data-action="sort" data-sort-direction="asc" data-sort="expelled"></th>
+          <th data-action="sort" data-sort-direction="asc" data-sort="expelled">Prefect</th>
           <th>Name</th>
           <th>House</th>
+          <th data-action="sort" data-sort-direction="asc" data-sort="expelled">Expell</th>
         </tr>
       </thead>
 
       <tbody></tbody>
     </table>
 
+    <div class="about">
+      <div class="studentsEachHouse">
+        <p class="gryffindor"></p>
+        <p class="hufflepuff"></p>
+        <p class="ravenclaw"></p>
+        <p class="slytherin"></p>
+      </div>
+      <p class="allStudents">TOTAL NR OF STUDENTS</p>
+      <p class="expelledStudents"></p>
+      <p class="displayedStudents"></p>
+    </div>
+
     <template class="studentTemplate">
       <tr>
-        <td data-field="expell">❌</td>
+        <td data-field="prefect">👑</td>
         <td class="studentName">STUDENT NAME</td>
         <td class="studentHouse">STUDENT HOUSE</td>
+        <td data-field="expell">❌</td>
       </tr>
     </template>
 
-    <div class="modalBG">
+    <div class="modalBG close">
       <!-- add a data-set here only should be enough (below)-->
+
       <div id="modal" class="modal_container">
+        <button class="closebutton">close</button>
         <div class="modal_header">
           <img alt="Harry Potter House" src="" class="house_image" />
 
@@ -62,7 +79,18 @@
 
         <img class="studentImage" src="" alt="Student Image" />
 
+        <button class="addInquisitorial" data-action="add">Add to Inquisitorial Squad</button>
+
         <p class="studentInfo"></p>
+      </div>
+    </div>
+
+    <div id="onlyonekind" class="dialog close">
+      <div class="dialogcontent">
+        <button class="closebutton">close</button>
+        <h1>You can only have one winner of each type</h1>
+        <h2>Remove the other if you want to appoint a new one</h2>
+        <p><button data-action="remove">Remove</button> <span class="student">NAME, the TYPE</span></p>
       </div>
     </div>
   </body>

@@ -24,6 +24,7 @@ html {
   font-size: 0.9em;
   min-width: 500px;
   margin: 0 auto;
+  border: black solid 1px;
   border-radius: 5px 5px 0 0;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -45,9 +46,9 @@ html {
   border-bottom: 1px solid gray;
 }
 
-.listOfStudents_table tbody tr:nth-of-type(even) {
+/* .listOfStudents_table tbody tr:nth-of-type(even) {
   background-color: #f3f3f3;
-}
+} */
 
 .listOfStudents_table tbody tr:last-of-type {
   border-bottom: 2px solid black;
@@ -56,10 +57,31 @@ html {
 .studentHouse {
   font-style: italic;
 }
+[data-field="prefect"],
+[data-field="expell"] {
+  text-align: center;
+}
+
+[data-field="expell"] {
+  border-left: black solid 1px;
+}
+
+[data-field="prefect"] {
+  border-right: black solid 1px;
+}
+
+[data-field="prefect"][data-prefect="false"],
+.inactive {
+  filter: grayscale(100%);
+  cursor: pointer;
+}
+
+/* if it is a winner */
 
 /* MODAL  --------------------------------------------------------------*/
-.modalBG {
-  display: none; /* Hidden by default */
+.modalBG,
+.dialog {
+  display: block; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;
@@ -70,7 +92,8 @@ html {
   background-color: rgba(0, 0, 0, 0.4); /* Has opacity */
 }
 
-.modal_container {
+.modal_container,
+.dialogcontent {
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;
@@ -99,22 +122,42 @@ html {
   margin: 0 auto;
 }
 
-.modal_container[data-design="gryffindor"] {
+[data-design="gryffindor"] {
   background-color: var(--gryffindor_bg);
   color: var(--gryffindor_text);
 }
 
-.modal_container[data-design="hufflepuff"] {
+[data-design="hufflepuff"] {
   background-color: var(--hufflepuff_bg);
   color: var(--hufflepuff_text);
 }
 
-.modal_container[data-design="ravenclaw"] {
+[data-design="ravenclaw"] {
   background-color: var(--ravenclaw_bg);
   color: var(--ravenclaw_text);
 }
 
-.modal_container[data-design="slytherin"] {
+[data-design="slytherin"] {
   background-color: var(--slytherin_bg);
   color: var(--slytherin_text);
+}
+
+.closebutton {
+  -moz-appearance: none;
+  appearance: none;
+  position: absolute;
+  top: 4vw;
+  right: 4vw;
+  border: none;
+  background-color: transparent;
+  font-size: 90%;
+  color: white;
+}
+
+.closebutton:hover {
+  color: black;
+}
+
+.close {
+  display: none;
 }
